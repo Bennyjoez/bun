@@ -1,9 +1,18 @@
-console.log("Hello via Bun!");
+import figlet from "figlet";
 
-const variable = "Benson Njuguna";
+const server = Bun.serve({
+  port: 3000,
 
-const greet = (a: string) => {
-  console.log(`Hello, ${a}. Welcome to Bun!`)
-};
+  fetch(req){
+    console.log(req)
+    const url = new URL(req.url)
+    if (url.pathname === '/') {
+      const body = figlet.textSync("I'm Learning Bun");
+      return new Response(body);
+    }
 
-greet(variable)
+    return new Response('404!');
+  }
+})
+
+console.log(`Listening on port ${server.port}`);
